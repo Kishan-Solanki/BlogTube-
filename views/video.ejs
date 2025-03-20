@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= video.title %> - Tube Page</title>
+    <%- include('./partials/head') %>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-player {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .video-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 8px;
+        }
+
+        .author-info img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        /* Comment Section */
+        .comments-container {
+            margin-top: 40px;
+        }
+
+        .comment-box {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .comment-box img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .comment-content {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        .add-comment input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('./partials/navbar') %>
+
+    <div class="container mt-5">
+        <div class="video-container">
+            <h1 class="video-title"><%= video.title %></h1>
+            <video class="video-player w-100" controls>
+                <source src="<%= video.videoURL %>" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p class="video-description"><%= video.description %></p>
+
+            <div class="author-info">
+                <img src="<%= video.createdBy.profileImageURL %>" alt="Profile Image">
+                <span>By <strong><%= video.createdBy.fullName %></strong></span>
+            </div>
+
+            <div class="comments-container">
+                <h3>Comments (<%= comments.length %>)</h3>
+
+                <% if (locals.user) { %>
+                    <form action="/tube/comment/<%= video._id %>" method="post" class="add-comment">
+                        <input type="text" name="content" id="content" class="form-control" placeholder="Add a comment..." required>
+                        <button class="mt-2 btn btn-primary" type="submit">Post Comment</button>
+                    </form>
+                <% } %>
+
+                <% comments.forEach(comment => { %>
+                    <div class="comment-box d-flex align-items-start">
+                        <img src="<%= comment.createdBy.profileImageURL %>" alt="User Image">
+                        <div class="comment-content">
+                            <strong><%= comment.createdBy.fullName %></strong>
+                            <p><%= comment.content %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlogTube | Home</title>
+  <%- include('./partials/head') %>
+  <style>
+    @keyframes bgAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hero {
+      background: linear-gradient(270deg, #08f57a, #ff0080, #8000ff, #00c3ff);
+      background-size: 400% 400%;
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      animation: bgAnimation 10s ease infinite;
+    }
+
+    .hero-buttons {
+      margin-top: 20px;
+    }
+
+    .hero-buttons .btn {
+      margin: 10px;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hero-buttons .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    }
+
+    .card {
+      width: 16rem;
+      margin: auto;
+    }
+
+    .card img {
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card-title {
+      font-size: 16px;
+    }
+
+    .btn-primary, .btn-danger {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/navbar', { blogs: blogs }) %>
+  
+  <header class="hero">
+    <h1>Welcome to BlogTube</h1>
+    <p>Explore insightful blogs and trending videos</p>
+    <div class="hero-buttons">
+      <a href="/blog" class="btn btn-light">Go to Blog App</a>
+      <a href="/tube" class="btn btn-dark">Go to Tube App</a>
+    </div>
+  </header>
+
+  <div class="container mt-5">
+    <div class="row row-cols-2 row-cols-md-3 g-3">
+      <% let combined = [...blogs, ...videos]; combined.forEach((item, index) => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <% if (item.coverImageURL) { %>
+              <img src="<%= item.coverImageURL %>" class="card-img-top" alt="Blog Image">
+            <% } else { %>
+              <a href="/tube/<%= item._id %>">
+                <img src="<%= item.thumbnailURL %>" class="card-img-top" alt="Video Thumbnail">
+              </a>
+            <% } %>
+            <div class="card-body">
+              <h5 class="card-title text-truncate" title="<%= item.title %>"><%= item.title %></h5>
+              <% if (item.coverImageURL) { %>
+                <a href="/blog/<%= item._id %>" class="btn btn-primary">Read More</a>
+              <% } else { %>
+                <a href="/tube/<%= item._id %>" class="btn btn-danger">Watch Now</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+  
+  <%- include('./partials/scripts') %>
+</body>
+
+</html>

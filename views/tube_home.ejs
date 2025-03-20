@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tube Home Page</title>
+  <%- include('./partials/head') %>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .tube-container {
+      max-width: 1200px;
+      margin: auto;
+      padding-top: 80px;
+    }
+
+    .animated-bg {
+      background: linear-gradient(-45deg, #06fd12, #ff0000, #1202fa);
+      background-size: 300% 300%;
+      animation: bgAnimation 6s ease infinite;
+      text-align: center;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    @keyframes bgAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      border: none;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-primary {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    /* Responsive Grid */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .col {
+      padding: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/navbar') %>
+
+  <div class="container tube-container">
+    <div class="animated-bg">Explore Videos</div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
+      <% videos.forEach(video => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <a href="/tube/<%= video._id %>">
+              <img src="<%= video.thumbnailURL %>" class="card-img-top" alt="Video Thumbnail">
+            </a>
+            <div class="card-body">
+              <h5 class="card-title" title="<%= video.title %>"><%= video.title %></h5>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+
+  <%- include('./partials/scripts') %>
+</body>
+
+</html>
