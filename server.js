@@ -25,7 +25,7 @@ app.use(express.static(path.resolve("./public")));
 mongoose.connect(process.env.MONGO_URL)
 .then((e)=>{console.log("mongo connected")});
 
-app.use(fileUpload({
+app.use(fileupload({
     useTempFiles: true,
     tempFileDir: '/tmp/',
 }));
