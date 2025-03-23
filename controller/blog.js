@@ -1,16 +1,31 @@
 const Blog=require("../models/blog");
 const Comment=require("../models/blog_comments")
-
+const cloudinary=require('cloudinary').v2;
 function handeladdnew(req, res) {
     return res.render("addblog", { user: req.user });
 };
+
+cloudinary.config({ 
+  cloud_name: 'divwkpavu', 
+  api_key: '349733689364518', 
+  api_secret: '-GJNMZrzpc2OLG5Au3Nyy1haAJA' 
+});
 async function handelcreatenewblog(req,res){
     const {title,body}=req.body;
+    const file=req.files.coverImage;
+    let url1='';
+    try {
+        const result = await cloudinary.uploader.upload(file.tempFilePath);
+        url1 = result.url;
+    } catch (err) {
+        console.error("Cloudinary Upload Error:", err);
+    }
+    
     const blog=await Blog.create({
         title,
         body,
         createdBy:req.user._id,
-        coverImageURL:`/uploads/${req.file.filename}`,
+        coverImageURL:url1,
     });
     return res.redirect(`/blog/${blog._id}`);
 };

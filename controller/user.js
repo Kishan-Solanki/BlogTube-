@@ -1,22 +1,35 @@
 const User = require('../models/user');
 const nodemailer=require('nodemailer');
+const cloudinary=require('cloudinary').v2;
 function signin(req, res) {
     return res.render('signin');
 };
 function signup(req, res) {
     return res.render('signup');
 };
-
+cloudinary.config({ 
+    cloud_name: 'divwkpavu', 
+    api_key: '349733689364518', 
+    api_secret: '-GJNMZrzpc2OLG5Au3Nyy1haAJA' 
+  });
 
 async function handelsignup(req, res) {
 
     try {
         const { fullName, email, password } = req.body;
+        const file=req.files.profileImage;
+    let url1='';
+    try {
+        const result = await cloudinary.uploader.upload(file.tempFilePath);
+        url1 = result.url;
+    } catch (err) {
+        console.error("Cloudinary Upload Error:", err);
+    }
 
         const newUser = await User.create({ fullName,
              email,
              password ,
-            profileImageURL:`/images/${req.file.filename}`});
+            profileImageURL:url1});
 
         res.redirect("/");  
     } catch (error) {

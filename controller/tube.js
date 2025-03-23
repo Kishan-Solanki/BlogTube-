@@ -1,26 +1,47 @@
 const Tube = require("../models/tube");
 const Comment = require("../models/tube_comments");
-
+const cloudinary=require('cloudinary').v2;
 function handeladdnew(req, res) {
     return res.render("addvideo", { user: req.user });
 };
-
+cloudinary.config({ 
+    cloud_name: 'divwkpavu', 
+    api_key: '349733689364518', 
+    api_secret: '-GJNMZrzpc2OLG5Au3Nyy1haAJA' 
+  });
 async function addnewvideo(req, res) {
     try {
         const { title, description } = req.body;
 
+
         if (!req.files || !req.files.video || !req.files.thumbnailImage) {
             return res.status(400).send("Video and thumbnail image are required!");
         }
+        const file1=req.files.thumbnailImage;
+    let url1='';
+    try {
+        const result = await cloudinary.uploader.upload(file1.tempFilePath);
+        url1 = result.url;
+    } catch (err) {
+        console.error("Cloudinary Upload Error:", err);
+    }
+    const file2=req.files.video;
+    let url2='';
+    try {
+        const result = await cloudinary.uploader.upload(file2.tempFilePath, {
+            resource_type: 'video'
+          });;
+        url2 = result.url;
+    } catch (err) {
+        console.error("Cloudinary Upload Error:", err);
+    }
 
-        const videoFile = req.files.video[0];  
-        const thumbnailFile = req.files.thumbnailImage[0];  
-
+        if(url2===''){res.send("upload video under 10mb")}
         const tube = await Tube.create({
             title,
             description,
-            videoURL: `/videos/${videoFile.filename}`,
-            thumbnailURL: `/thumbnails/${thumbnailFile.filename}`,
+            videoURL: url2,
+            thumbnailURL: url1,
             createdBy: req.user._id
         });
 

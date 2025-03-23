@@ -9,7 +9,7 @@ const Blog=require("./models/blog");
 const Tube=require("./models/tube");
 const cookieParser=require('cookie-parser');
 const { checkForAuthenticatioCookie } = require('./middlewares/auth');
-
+const fileupload=require('express-fileupload');
 
 const app=express();
 const port=process.env.PORT;
@@ -24,6 +24,10 @@ app.use(express.static(path.resolve("./public")));
 
 mongoose.connect(process.env.MONGO_URL)
 .then((e)=>{console.log("mongo connected")});
+
+app.use(fileupload({
+    useTempFiles:true
+}))
 
 app.get("/",async (req,res)=>{
     const allBlogs=await Blog.find({});
