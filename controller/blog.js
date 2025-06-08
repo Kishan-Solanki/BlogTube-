@@ -5,11 +5,6 @@ function handeladdnew(req, res) {
     return res.render("addblog", { user: req.user });
 };
 
-cloudinary.config({ 
-  cloud_name: 'divwkpavu', 
-  api_key: '349733689364518', 
-  api_secret: '-GJNMZrzpc2OLG5Au3Nyy1haAJA' 
-});
 async function handelcreatenewblog(req, res) {
     try {
         const { title, body } = req.body;
