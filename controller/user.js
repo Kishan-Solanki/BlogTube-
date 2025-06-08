@@ -7,11 +7,7 @@ function signin(req, res) {
 function signup(req, res) {
     return res.render('signup');
 };
-cloudinary.config({ 
-    cloud_name: 'divwkpavu', 
-    api_key: '349733689364518', 
-    api_secret: '-GJNMZrzpc2OLG5Au3Nyy1haAJA' 
-  });
+
 
 async function handelsignup(req, res) {
 
