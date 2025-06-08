@@ -4,11 +4,6 @@ const cloudinary=require('cloudinary').v2;
 function handeladdnew(req, res) {
     return res.render("addvideo", { user: req.user });
 };
-cloudinary.config({ 
-    cloud_name: 'divwkpavu', 
-    api_key: '349733689364518', 
-    api_secret: '-GJNMZrzpc2OLG5Au3Nyy1haAJA' 
-  });
 async function addnewvideo(req, res) {
     try {
         const { title, description } = req.body;
